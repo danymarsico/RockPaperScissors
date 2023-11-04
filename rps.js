@@ -1,36 +1,58 @@
-let computerSelection = getComputerChoice();
-let playerSelection = prompt ("Choose rock, paper or scissors");
+let computerSelection;
+let playerSelection;
+let computerScore = 0;
+let playerScore = 0;
+
 
 /*The following function will pick the computer's choice*/
 function getComputerChoice() {
-    let choice = ["rock", "paper", "scissors"],
+    let choice = ["Rock", "Paper", "Scissors"];
      pickedChoice = choice[Math.floor(Math.random() * choice.length)];
-     console.log(pickedChoice);
+     return pickedChoice.toLowerCase();
     }
 
 /*This following function will play a round*/
 function playRound(playerSelection, computerSelection) {
+    let roundResult;
+    computerSelection = getComputerChoice();
+    playerSelection = prompt ("Choose rock, paper or scissors: ").toLowerCase();
 
     if (playerSelection===computerSelection){
-        return "It's a tie!" 
+        computerScore++;
+        playerScore++;
+        roundResult = "It's a tie!"; 
     }
-    else if (playerSelection === "rock" && computerSelection === "scissors") {
-        return "You win! Rock beats scissors"
+    else if (
+        (playerSelection === "rock" && computerSelection === "scissors") ||
+        (playerSelection === "paper" && computerSelection === "rock") ||
+        (playerSelection === "scissors" && computerSelection === "paper")) {
+        playerScore++;
+        roundResult = `You win! ${playerSelection} beats ${computerSelection}`;
     }
-    else if (playerSelection === "paper" && computerSelection === "scissors") {
-        return"You loose! Scissors beats paper" 
+    else {
+        computerScore++;
+        roundResult = `You loose! ${computerSelection} beats ${playerSelection}`;
     }
-    else if (playerSelection === "rock" && computerSelection === "paper") {
-        return "You loose! Paper beats rock" 
+
+    return roundResult;
+};
+
+function game() {
+    let round = 1;
+    while (round < 5) {
+        playRound(playerSelection,computerSelection);
+        round++;
     }
-    else if (playerSelection === "paper" && computerSelection === "rock") {
-        return "You win! Paper beats rock" 
+    if(round === 5) {
+        if(playerScore == computerScore) {
+            console.log("Game is a draw!");
+        } else if(playerScore > computerScore) {
+            console.log(`Player wins with ${playerScore} points`);
+        }
+        else if(playerScore < computerScore) {
+            console.log(`Computer wins with ${computerScore} points`);
+        }
     }
-    else if (playerSelection === "scissors" && computerSelection === "paper") {
-        return "You win! Scissors beats paper"
-    }
-    else if (playerSelection === "scissors" && computerSelection === "rock") {
-        return"You loose! Rock beats scissors"
-    }
-}
-console.log(playRound());
+};
+
+game();
